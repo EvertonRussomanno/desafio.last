@@ -1,7 +1,9 @@
 package com.dio.desafio.last.service.impl;
 
 import com.dio.desafio.last.domain.model.product.Product;
+import com.dio.desafio.last.domain.model.repository.DescriptionRepository;
 import com.dio.desafio.last.domain.model.repository.ProductRepository;
+import com.dio.desafio.last.service.ProductService;
 import com.dio.desafio.last.service.exception.BusinessException;
 import com.dio.desafio.last.service.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -12,13 +14,17 @@ import java.util.List;
 import static java.util.Optional.ofNullable;
 
 @Service
-public class ProductServiceImpl {
+public class ProductServiceImpl implements ProductService {
 
     private static final Long UNCHANGEABLE_USER_ID = 1L;
 
     private final ProductRepository productRepository;
+    private final DescriptionRepository descriptionRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository){this.productRepository = productRepository;}
+    public ProductServiceImpl(ProductRepository productRepository, DescriptionRepository descriptionRepository){
+        this.productRepository = productRepository;
+        this.descriptionRepository = descriptionRepository;
+    }
 
     @Transactional(readOnly = true)
     public List<Product> findAll() {
@@ -40,7 +46,7 @@ public class ProductServiceImpl {
         if (productRepository.existsByProductName(productToCreate.getProductName())) {
             throw new BusinessException("This product name already exists.");
         }
-        if (productRepository.existsByBarcode(productToCreate.getDescription().getBarcode())) {
+        if (descriptionRepository.existsByBarcode(productToCreate.getDescription().getBarcode())) {
             throw new BusinessException("This product barcode already exists.");
         }
         return this.productRepository.save(productToCreate);
