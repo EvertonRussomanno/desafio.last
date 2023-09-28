@@ -2,12 +2,14 @@ package com.dio.desafio.last.domain.model.product;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 
 import java.math.BigDecimal;
 
 @Entity(name = "tb_price_composition")
 @Getter
+@Setter
 public class PriceComposition {
 
     @Id
@@ -21,17 +23,4 @@ public class PriceComposition {
 
     private Double tax;
 
-    public void setId(Long id) {this.id = id;}
-
-    public void setCostPrice(BigDecimal costPrice) {
-        this.costPrice = costPrice;
-    }
-
-    public void setProfitInPercent(Double profitInPercent) {
-        this.profitInPercent = (profitInPercent/100);
-    }
-
-    public void setTax(Double tax) {
-        this.tax = (tax/100);
-    }
 }

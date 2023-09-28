@@ -1,5 +1,7 @@
 package com.dio.desafio.last.service.impl;
 
+import com.dio.desafio.last.domain.model.product.Description;
+import com.dio.desafio.last.domain.model.product.PriceComposition;
 import com.dio.desafio.last.domain.model.product.Product;
 import com.dio.desafio.last.domain.model.repository.DescriptionRepository;
 import com.dio.desafio.last.domain.model.repository.ProductRepository;
@@ -9,6 +11,7 @@ import com.dio.desafio.last.service.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static java.util.Optional.ofNullable;
@@ -49,6 +52,9 @@ public class ProductServiceImpl implements ProductService {
         if (descriptionRepository.existsByBarcode(productToCreate.getDescription().getBarcode())) {
             throw new BusinessException("This product barcode already exists.");
         }
+
+        calculateSalePrice(productToCreate.getDescription(), productToCreate.getPriceComposition());
+
         return this.productRepository.save(productToCreate);
     }
 
@@ -78,8 +84,21 @@ public class ProductServiceImpl implements ProductService {
 
     private void validateChangeableId(Long id, String operation) {
         if (UNCHANGEABLE_USER_ID.equals(id)) {
-            throw new BusinessException("User with ID %d can not be %s.".formatted(UNCHANGEABLE_USER_ID, operation));
+            throw new BusinessException("Product with ID %d can not be %s.".formatted(UNCHANGEABLE_USER_ID, operation));
         }
+    }
+
+    private void calculateSalePrice(Description description, PriceComposition priceComposition){
+
+        BigDecimal costPrice = priceComposition.getCostPrice().setScale(4);
+        double profitInPercent = 1 + (priceComposition.getProfitInPercent() / 100);
+        double tax = 1 + (priceComposition.getTax() / 100);
+
+        BigDecimal salePrice = costPrice.multiply(BigDecimal.valueOf(tax));
+
+        salePrice = salePrice.multiply(BigDecimal.valueOf(profitInPercent));
+
+        description.setSalePrice(salePrice);
     }
 
 }
