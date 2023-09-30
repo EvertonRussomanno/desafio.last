@@ -1,7 +1,5 @@
 package com.dio.desafio.last.service.impl;
 
-import com.dio.desafio.last.domain.model.product.Description;
-import com.dio.desafio.last.domain.model.product.PriceComposition;
 import com.dio.desafio.last.domain.model.product.Product;
 import com.dio.desafio.last.domain.model.repository.DescriptionRepository;
 import com.dio.desafio.last.domain.model.repository.ProductRepository;
@@ -53,9 +51,7 @@ public class ProductServiceImpl implements ProductService {
             throw new BusinessException("This product barcode already exists.");
         }
 
-        calculateSalePrice(productToCreate.getDescription(), productToCreate.getPriceComposition());
-
-        return this.productRepository.save(productToCreate);
+        return this.productRepository.save(SalePriceServiceImpl.calculateSalePrice(productToCreate));
     }
 
     @Transactional
@@ -66,8 +62,10 @@ public class ProductServiceImpl implements ProductService {
             throw new BusinessException("Update IDs must be the same.");
         }
 
+        Product productCreatedSalePrice = SalePriceServiceImpl.calculateSalePrice(productToUpdate);
+
         dbUser.setProductName(productToUpdate.getProductName());
-        dbUser.setDescription(productToUpdate.getDescription());
+        dbUser.setDescription(productCreatedSalePrice.getDescription());
         dbUser.setPriceComposition(productToUpdate.getPriceComposition());
         dbUser.setStorage(productToUpdate.getStorage());
         dbUser.setImages(productToUpdate.getImages());
@@ -86,19 +84,6 @@ public class ProductServiceImpl implements ProductService {
         if (UNCHANGEABLE_USER_ID.equals(id)) {
             throw new BusinessException("Product with ID %d can not be %s.".formatted(UNCHANGEABLE_USER_ID, operation));
         }
-    }
-
-    private void calculateSalePrice(Description description, PriceComposition priceComposition){
-
-        BigDecimal costPrice = priceComposition.getCostPrice().setScale(4);
-        double profitInPercent = 1 + (priceComposition.getProfitInPercent() / 100);
-        double tax = 1 + (priceComposition.getTax() / 100);
-
-        BigDecimal salePrice = costPrice.multiply(BigDecimal.valueOf(tax));
-
-        salePrice = salePrice.multiply(BigDecimal.valueOf(profitInPercent));
-
-        description.setSalePrice(salePrice);
     }
 
 }

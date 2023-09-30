@@ -1,5 +1,6 @@
 package com.dio.desafio.last.controller.exception;
 
+import com.dio.desafio.last.service.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleNotFoundException(NoSuchElementException notFoundException){
         return new ResponseEntity<>("Resource ID not found", HttpStatus.NOT_FOUND);//404
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<String> handleProductAlreadyExistsException(BusinessException businessException){
+        var message = businessException.getMessage();
+        return new ResponseEntity<>(message, HttpStatus.FOUND);
     }
 
     @ExceptionHandler(Throwable.class)
