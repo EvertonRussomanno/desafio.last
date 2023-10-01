@@ -25,8 +25,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>("Resource ID not found", HttpStatus.NOT_FOUND);//404
     }
 
+
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<String> handleProductAlreadyExistsException(BusinessException businessException){
+    public ResponseEntity<String> handlePBusinessException(BusinessException businessException){
         var message = businessException.getMessage();
         return new ResponseEntity<>(message, HttpStatus.FOUND);
     }

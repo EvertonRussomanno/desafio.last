@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.List;
 
+
 @Entity(name = "tb_product")
 @Getter
 @Setter
