@@ -67,7 +67,7 @@ classDiagram
 
 Este projeto foi construído com um viés totalmente educacional para a DIO.
 
-Adicionei alguns tratamentos de exceções e uma classe que faz o cálculo do preço de custo.
+Adicionei alguns tratamentos de exceções e uma classe que faz o cálculo do preço de venda.
 
 ## URL da API
 
