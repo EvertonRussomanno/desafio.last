@@ -16,9 +16,7 @@ public class SalePriceServiceImpl {
 
         BigDecimal salePrice = costPrice.multiply(BigDecimal.valueOf(tax));
 
-        salePrice = salePrice.multiply(BigDecimal.valueOf(profitInPercent));
-
-        productToCreateSalePrice.getDescription().setSalePrice(salePrice);
+       productToCreateSalePrice.getDescription().setSalePrice(salePrice.multiply(BigDecimal.valueOf(profitInPercent)));
 
         return productToCreateSalePrice;
     }

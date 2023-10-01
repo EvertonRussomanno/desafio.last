@@ -1,7 +1,6 @@
 package com.dio.desafio.last.controller;
 
 import com.dio.desafio.last.controller.dto.ProductDto;
-import com.dio.desafio.last.domain.model.product.Product;
 import com.dio.desafio.last.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,5 +1,16 @@
-# desafio-dio-santander-last
-Estoque
+# Último desafio Bootcamp Santander
+
+Esta Java RESTful API criada com o domínio de produtos em estoque.
+
+## Técnologias Utilizadas:
+### Java 17
+### Spring Boot 3
+### Spring Data JPA
+### H2 Database
+### OpenAPI (Swagger)
+### Railway
+### Postgres
+
 ## Dagrama de classes:
 
 ```mermaid
@@ -49,3 +60,6 @@ classDiagram
     Product "1" *-- "1" Storage
     Product "1" *-- "N" Image
 ```
+## IMPORTANTE
+
+Este projeto foi construído com um viés totalmente educacional para a DIO.
